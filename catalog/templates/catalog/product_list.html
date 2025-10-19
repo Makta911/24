@@ -1,0 +1,44 @@
+{% extends 'catalog/base.html' %}
+{% load my_tags %}
+{% block content %}
+  <div class="album py-5 bg-light">
+    <div class="container">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        {% for product in product %}
+        <div class="col">
+          <div class="card shadow-sm">
+            <img src="{{ product.image | media_filter }}" alt="{{ product.name }}" class="card-img-top" style="height: 225px; object-fit: cover;">
+
+            <div class="card-body">
+              <h5 class="card-title">{{ product.name }}</h5>
+              <p class="card-text">
+                <!-- ОБРЕЗКА ОПИСАНИЯ ДО 100 СИМВОЛОВ -->
+                {{ product.description|truncatechars:100 }}
+              </p>
+
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <!-- ССЫЛКА НА ДЕТАЛЬНУЮ СТРАНИЦУ -->
+                  <a href="{% url 'catalog:product_detail' product.pk %}" class="btn btn-sm btn-outline-primary">
+                    Подробнее
+                  </a>
+                </div>
+                <small class="text-muted">{{ product.price }} руб.</small>
+              </div>
+
+              <!-- ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ -->
+              <div class="mt-2">
+                <small class="text-muted">Категория: {{ product.category.name }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+          <p class="text-center">Товаров пока нет.</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
